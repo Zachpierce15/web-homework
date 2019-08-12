@@ -1,47 +1,42 @@
 import React from 'react'
 import { css } from '@emotion/core'
 
+import Popup from './Transactions/addingTranaction'
+
 export class UserInterface extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      user: '',
-      clicked: false
+      transactions: [],
+      showPopup: false
     }
     // Bind functions here that need to be passed down to other components
-    this.onChangeHandler = this.onChangeHandler.bind(this)
-    this.onSubmitHandler = this.onSubmitHandler.bind(this)
+    this.togglePopup = this.togglePopup.bind(this)
   }
 
-  onChangeHandler (e) {
-    this.setState({ user: e.target.value })
-  }
-
-  onSubmitHandler (e) {
-    e.preventDefault()
-    this.setState({ clicked: true })
+  togglePopup () {
+    const { showPopup } = this.state
+    this.setState({
+      showPopup: !showPopup
+    })
   }
 
   render () {
-    const { user, clicked } = this.state
+    const { transactions, showPopup } = this.state
     return (
-      <div>
-        {!clicked &&
-        (
-          <form css={formStyle} onSubmit={this.onSubmitHandler}>
-            <label>User<input css={inputStyle} onChange={this.onChangeHandler} type='text' value={user} />
-              <input type='submit' />
-            </label>
-          </form>
-        )
-        }
-        {clicked &&
-        (
+      <div >
+        <h1 css={formStyle}> Transactions </h1>
+        { transactions.length === 0 ? (
           <div>
-            {'Hello ' + user}
+            <div css={noTransactions}>
+          You have no transactions at this time
+              <button css={addButton} onClick={this.togglePopup}> Add Transaction </button>
+            </div>
+            { showPopup ? <Popup closePopup={this.togglePopup} /> : null }
           </div>
-        )
-        }
+        ) : (
+          <div> Second </div>
+        )}
       </div>
     )
   }
@@ -49,10 +44,18 @@ export class UserInterface extends React.Component {
 
 const formStyle = css`
     display: grid;
+    text-align: center;
     grid-row-gap: 10px;
     padding: 8px;
+    text-decoration: underline;
 `
-const inputStyle = css`
-  grid-row: 1;
-  margin-left: 16px;
+const noTransactions = css`
+  display: flex;
+  text-align: center;
+  position:relative;
+  flex-direction: column;
+  `
+const addButton = css`
+  border-radius: 12px;
+  margin: auto;
 `

@@ -2,12 +2,13 @@ import React from 'react'
 import { css } from '@emotion/core'
 
 import Popup from './Transactions/addingTranaction'
+import TransactionList from './Transactions/listOfTransactions'
 
 export class UserInterface extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      transactions: [],
+      transactions: [1],
       showPopup: false
     }
     // Bind functions here that need to be passed down to other components
@@ -35,7 +36,11 @@ export class UserInterface extends React.Component {
             { showPopup ? <Popup closePopup={this.togglePopup} /> : null }
           </div>
         ) : (
-          <div> Second </div>
+          <div>
+            <button css={addButton} onClick={this.togglePopup}> Add Transaction </button>
+            <TransactionList />
+            { showPopup ? <Popup closePopup={this.togglePopup} /> : null }
+          </div>
         )}
       </div>
     )

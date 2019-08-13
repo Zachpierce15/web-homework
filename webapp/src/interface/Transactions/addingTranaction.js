@@ -60,7 +60,7 @@ class Popup extends React.Component {
 
             <label css={{ display: 'flex' }}>
               Description:
-              <input css={largeBox} onChange={this.createDescription} type='text' value={description} />
+              <textarea col='500' css={largeBox} onChange={this.createDescription} rows='6' value={description} />
             </label>
             <input css={submitButton} onSubmit={this.onSubmitHandler} type='submit' />
           </form>
@@ -103,10 +103,8 @@ const inputs = css`
   margin: 0px 0px 20px 5px;
 `
 const largeBox = css`
-  display: absolute;
   margin: 0px 0px 10px 5px;
-  width: 350px;
-  height: 100px;
+  width: 75%;
 `
 const exitButton = css`
   margin: 5px;

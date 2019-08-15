@@ -77,7 +77,9 @@ class EditingTransaction extends React.Component {
           <div css={desc}>
             <textarea col='20' css={textBox} name='desc' onChange={this.onChangeHandler} rows='8' value={description} />
           </div>
-          <input onSubmit={this.onSubmitHandler} type='submit' />
+          <div css={submitDiv}>
+            <input css={submitButton} onSubmit={this.onSubmitHandler} type='submit' value={'Save'} />
+          </div>
         </form>
       </div>
     )
@@ -125,4 +127,13 @@ const dateCss = css`
    margin: 10px 5px 5px 10px;
    text-align: right;
    width: 93%;
+`
+const submitButton = css`
+   margin: 2px 5px 5px 10px;
+   width: 90%;
+`
+const submitDiv = css`
+  width: 10%;
+  text-align: right;
+  margin: 0px 18px 0px 0px;
 `

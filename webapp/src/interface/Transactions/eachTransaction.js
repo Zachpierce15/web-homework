@@ -63,7 +63,7 @@ class Item extends React.Component {
               Merchant Transaction: {' ' + printMerchant}
             </div>
             <div css={eachItem} >
-              Date:{' ' + date}
+             Transaction Date:{' ' + date}
             </div>
           </div>
           <div>

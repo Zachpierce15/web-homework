@@ -104,6 +104,7 @@ const addButton = css`
 `
 const otherAddButton = css`
     border-radius: 12px;
-    margin-right: 152px;
+    width: 10%;
     margin-bottom: 7px;
+    margin-right: 350px;
 `

@@ -44,13 +44,15 @@ class EditingTransaction extends React.Component {
         <form onSubmit={this.onSubmitHandler}>
 
           <div css={transactionLeft}>
-
+            <div css={dateCss} >
+          Transaction Date:{' ' + date}
+            </div>
             <div css={eachItem}>
-          Amount:
+          Amount: {' '}
               <input name='amount' onChange={this.onChangeHandler} type='number' value={Number(amount)} />
             </div>
             <div css={eachItem}>
-          Type:
+          Type: {' '}
               <select name='type' onChange={this.onChangeHandler}>
                 <option value='Credit'>Credit</option>
                 <option value='Debit'>Debit</option>
@@ -61,20 +63,19 @@ class EditingTransaction extends React.Component {
           <div css={transactionRight}>
             <div css={eachItem}>
           Merchant Transaction:
+              {' '}
               <select>
                 <option value >Yes</option>
                 <option value={false} >No</option>
               </select>
             </div>
-            <div css={eachItem} >
-          Date:{' ' + date}
-            </div>
+
           </div>
           <div css={{ margin: '0px 0px 10px 10px' }}>
         Description:
           </div>
           <div css={desc}>
-            <textarea col='20' name='desc' onChange={this.onChangeHandler} rows='8' value={description} />
+            <textarea col='20' css={textBox} name='desc' onChange={this.onChangeHandler} rows='8' value={description} />
           </div>
           <input onSubmit={this.onSubmitHandler} type='submit' />
         </form>
@@ -109,7 +110,19 @@ const Items = css`
 `
 const desc = css`
   margin: 10px 10px 10px 10px;
+  width: 685px;
+  height: 119px;
 `
 const eachItem = css`
    margin: 10px 5px 5px 10px;
+`
+const textBox = css`
+  width: 672px;
+  height: 119px;
+  font-size: medium;
+`
+const dateCss = css`
+   margin: 10px 5px 5px 10px;
+   text-align: right;
+   width: 93%;
 `

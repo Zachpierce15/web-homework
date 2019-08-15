@@ -1,30 +1,32 @@
 import React from 'react'
 import Item from './eachTransaction'
+import PropTypes from 'prop-types'
 
-const item = [{
-  id: 1,
-  amount: 10,
-  type: 'Credit',
-  merchant: 'No',
-  date: '11:00 AM',
-  description: 'Hello this is a really long thing to write when it is just a testadasfasd;fasdjsdlfjasd;lfkasjdf;lasdkjfa;sldfjas;lfkas'
-},
-{
-  id: 2,
-  amount: 1500,
-  type: 'Debit',
-  merchant: 'Yes',
-  date: '1:00 PM',
-  description: 'I am better than all of you'
-}]
+const getRandomInt = (min, max) => {
+  const minimum = Math.ceil(min)
+  const maximum = Math.floor(max)
+  return Math.floor(Math.random() * (maximum - minimum)) + minimum
+}
 
-const TransactionList = (props) => (
-  <div>
-    {
-      item.map(item => {
-        return <Item item={item} key={item.id} />
-      })
-    }
-  </div>
-)
+const TransactionList = (props) => {
+  const { item } = props.items
+  const { remove, edit } = props
+  return (
+    <div>
+      {
+        item.map(item => {
+          let id = getRandomInt(1, 1000000)
+          item.id = id
+          return <Item edit={edit} item={item} key={id} remove={remove} />
+        })
+      }
+    </div>
+  )
+}
+
+TransactionList.propTypes = {
+  items: PropTypes.object.isRequired,
+  remove: PropTypes.func.isRequired,
+  edit: PropTypes.func.isRequired
+}
 export default TransactionList

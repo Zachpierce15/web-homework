@@ -3,16 +3,20 @@ import { css } from '@emotion/core'
 
 import Popup from './Transactions/addingTranaction'
 import TransactionList from './Transactions/listOfTransactions'
+import items from '../mockData'
 
 export class UserInterface extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      transactions: [1],
+      transactions: items,
       showPopup: false
     }
     // Bind functions here that need to be passed down to other components
     this.togglePopup = this.togglePopup.bind(this)
+    this.addTransaction = this.addTransaction.bind(this)
+    this.removeTransaction = this.removeTransaction.bind(this)
+    this.editTransaction = this.editTransaction.bind(this)
   }
 
   togglePopup () {
@@ -22,24 +26,58 @@ export class UserInterface extends React.Component {
     })
   }
 
+  addTransaction (newItem) {
+    const { transactions } = this.state
+    const oldState = { ...transactions }
+    oldState.item.push(newItem)
+    this.setState({ transactions: oldState })
+  }
+
+  removeTransaction (item) {
+    const { transactions } = this.state
+    const oldState = { ...transactions }
+    for (let i = 0; i < oldState.item.length; i++) {
+      let oldItem = oldState.item[i]
+      if (oldItem.id === item.id) {
+        oldState.item.splice(i, 1)
+      }
+    }
+    this.setState({ transactions: oldState })
+  }
+
+  editTransaction (newItem) {
+    const { transactions } = this.state
+    const oldState = { ...transactions }
+    for (let i = 0; i < oldState.item.length; i++) {
+      let item = oldState.item[i]
+      if (item.id === newItem.id) {
+        oldState.item.splice(i, 1)
+        oldState.item.push(newItem)
+      }
+    }
+    this.setState({ transactions: oldState })
+  }
+
   render () {
     const { transactions, showPopup } = this.state
     return (
       <div >
         <h1 css={formStyle}> Transactions </h1>
-        { transactions.length === 0 ? (
+        { transactions.item.length === 0 ? (
           <div>
             <div css={noTransactions}>
           You have no transactions at this time
               <button css={addButton} onClick={this.togglePopup}> Add Transaction </button>
             </div>
-            { showPopup ? <Popup closePopup={this.togglePopup} /> : null }
+            { showPopup ? <Popup add={this.addTransaction} closePopup={this.togglePopup} /> : null }
           </div>
         ) : (
           <div>
-            <button css={addButton} onClick={this.togglePopup}> Add Transaction </button>
-            <TransactionList />
-            { showPopup ? <Popup closePopup={this.togglePopup} /> : null }
+            <div css={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <button css={otherAddButton} onClick={this.togglePopup}> Add Transaction </button>
+            </div>
+            <TransactionList edit={this.editTransaction} items={transactions} remove={this.removeTransaction} />
+            { showPopup ? <Popup add={this.addTransaction} closePopup={this.togglePopup} /> : null }
           </div>
         )}
       </div>
@@ -63,4 +101,9 @@ const noTransactions = css`
 const addButton = css`
   border-radius: 12px;
   margin: auto;
+`
+const otherAddButton = css`
+    border-radius: 12px;
+    margin-right: 152px;
+    margin-bottom: 7px;
 `

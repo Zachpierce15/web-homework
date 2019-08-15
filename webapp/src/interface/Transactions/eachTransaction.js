@@ -1,58 +1,84 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { css } from '@emotion/core'
+import EditTransaction from './editTransaction'
 
 class Item extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {}
+    const { amount, type, merchant, date, description, id } = this.props.item
+    this.state = {
+      edit: false,
+      amount: amount,
+      type: type,
+      date: date,
+      merchant: merchant,
+      description: description,
+      id: id
+    }
+    this.makeEdit = this.makeEdit.bind(this)
   }
 
   static propTypes = {
-    item: PropTypes.object.isRequired
-    // amount: PropTypes.number.isRequired,
-    // id: PropTypes.number.isRequired,
-    // type: PropTypes.string.isRequired,
-    // merchant: PropTypes.string.isRequired,
-    // date: PropTypes.string.isRequired,
-    // description: PropTypes.string.isRequired
+    item: PropTypes.object.isRequired,
+    remove: PropTypes.func.isRequired,
+    edit: PropTypes.func.isRequired
+  }
+
+  makeEdit () {
+    this.setState({ edit: !this.state.edit })
   }
 
   render () {
-    const { item } = this.props
+    // const { edit, description, amount, type, date, cuerrentMerchant } = this.state
+    const { item, remove, edit } = this.props
     const { amount, type, merchant, date, description } = item
-    return (
-      <div css={Items}>
 
-        <div css={transactionLeft}>
-
-          <div css={eachItem}>
-            Amount: {' $' + amount}
-          </div>
-          <div css={eachItem}>
-            Type:{' ' + type}
-          </div>
-        </div>
-
-        <div css={transactionRight}>
-          <div css={eachItem}>
-            Merchant Transaction: {' ' + merchant}
-          </div>
-          <div css={eachItem} >
-            Date:{' ' + date}
-          </div>
-        </div>
+    if (this.state.edit) {
+      return (
         <div>
-          <button>Remove</button>
+          <EditTransaction data={this.state} edit={edit} remove={remove} />
         </div>
-        <div css={{ margin: '0px 0px 10px 10px' }}>
-          Description:
+      )
+    } else {
+      let printMerchant
+      if (merchant === false) {
+        printMerchant = 'No'
+      } else { printMerchant = 'Yes' }
+      return (
+        <div css={Items}>
+
+          <div css={transactionLeft}>
+
+            <div css={eachItem}>
+              Amount: {' $' + amount}
+            </div>
+            <div css={eachItem}>
+              Type:{' ' + type}
+            </div>
+          </div>
+
+          <div css={transactionRight}>
+            <div css={eachItem}>
+              Merchant Transaction: {' ' + printMerchant}
+            </div>
+            <div css={eachItem} >
+              Date:{' ' + date}
+            </div>
+          </div>
+          <div>
+            <button onClick={this.makeEdit}>Edit</button>
+            <button onClick={() => remove(this.state)}>Remove</button>
+          </div>
+          <div css={{ margin: '0px 0px 10px 10px' }}>
+            Description:
+          </div>
+          <div css={desc}>
+            {description}
+          </div>
         </div>
-        <div css={desc}>
-          {description}
-        </div>
-      </div>
-    )
+      )
+    }
   }
 }
 export default Item

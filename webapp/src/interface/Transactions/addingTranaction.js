@@ -1,27 +1,49 @@
+/* eslint-disable jsx-a11y/no-onchange */
 import React from 'react'
 import PropTypes from 'prop-types'
+// import axios from 'axios'
 import { css } from '@emotion/core'
 
 class Popup extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      description: ''
+      description: '',
+      amount: 0,
+      type: 'Credit',
+      merchant: false,
+      date: new Date().toLocaleDateString()
     }
-    this.createDescription = this.createDescription.bind(this)
+    this.onChangeHandler = this.onChangeHandler.bind(this)
     this.onSubmitHandler = this.onSubmitHandler.bind(this)
   }
 
   static propTypes = {
-    closePopup: PropTypes.func.isRequired
+    closePopup: PropTypes.func.isRequired,
+    add: PropTypes.func.isRequired
   }
 
-  createDescription (e) {
-    this.setState({ description: e.target.value })
+  onChangeHandler (e) {
+    if (e.target.name === 'desc') {
+      this.setState({ description: e.target.value })
+    }
+    if (e.target.name === 'amount') {
+      this.setState({ amount: e.target.value })
+    }
+    if (e.target.name === 'type') {
+      this.setState({ type: e.target.value })
+    }
+    if (e.target.name === 'user') {
+      this.setState({ merchant: e.target.value })
+    }
   }
 
   onSubmitHandler (e) {
+    const { closePopup, add } = this.props
+    this.setState({ date: new Date().toLocaleDateString() })
     e.preventDefault()
+    add(this.state)
+    closePopup()
   }
 
   render () {
@@ -35,36 +57,37 @@ class Popup extends React.Component {
             <button onClick={closePopup}>X</button>
           </div>
           <h1 css={{ textAlign: 'center', marginTop: '0px' }}> Transaction Form </h1>
-          <form css={form}>
+          <form css={form} onSubmit={this.onSubmitHandler}>
 
             <lable>
             Amount: $
-              <input css={inputs} type='number' />
+              <input css={inputs} name='amount' onChange={this.onChangeHandler} step='0.01' type='number' />
             </lable>
 
             <label>
               Type:
-              <select css={inputs}>
-                <option value='credit'> Credit </option>
-                <option value='debit'> Debit </option>
+              <select css={inputs} name='type' onChange={this.onChangeHandler}>
+                <option value='Credit'> Credit </option>
+                <option value='Debit'> Debit </option>
               </select>
             </label>
 
             <label>
               Are you a merchant?
-              <select css={inputs}>
-                <option value='true'> Yes </option>
-                <option value='false'> No </option>
+              <select css={inputs} name='user' onChange={this.onChangeHandler} >
+                <option value={false}> No </option>
+                <option value> Yes </option>
               </select>
             </label>
 
             <label css={{ display: 'flex' }}>
               Description:
-              <textarea col='500' css={largeBox} onChange={this.createDescription} rows='6' value={description} />
+              <textarea col='500' css={largeBox} name='desc' onChange={this.onChangeHandler} rows='9' value={description} />
             </label>
-            <input css={submitButton} onSubmit={this.onSubmitHandler} type='submit' />
-          </form>
 
+            <input css={submitButton} onSubmit={this.onSubmitHandler} type='submit' />
+
+          </form>
         </div>
       </div>
     )
